@@ -2,8 +2,20 @@
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
 }
+
 .form {
   text-align: center;
   background-color: bisque;
-  margin-top: 0;
+  margin-bottom: 2em;
+}
+.text {
+  margin-top: 3em;
+  color: rgb(29, 18, 18);
+  font-family: "Times New Roman", Times, serif;
+}
+
+.footer {
+  text-align: center;
+  font-size: 30px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande";
 }

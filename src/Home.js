@@ -72,15 +72,18 @@ export class Home extends Component {
   render() {
     return (
       <form className="form">
-        <label>Pick your ticket:</label>
+        <label className="text pick">Pick your ticket:</label>
 
         <select value={this.state.ticketType} onChange={this.handleChange}>
           <option value="standard">Standard</option>
           <option value="concession">Concession</option>
         </select>
-        <h2> The Ticket price is : £ {this.state.ticketPrice}</h2>
+        <h2 className="text">
+          {" "}
+          The Ticket price is : £ {this.state.ticketPrice}
+        </h2>
 
-        <label>Real3D: </label>
+        <label className="text">Real3D: </label>
         <input
           name="Real3D"
           type="checkbox"
@@ -89,7 +92,7 @@ export class Home extends Component {
         />
 
         <br />
-        <label>IMAX:</label>
+        <label className="text">IMAX:</label>
         <input
           name="IMAX"
           type="checkbox"
@@ -97,8 +100,8 @@ export class Home extends Component {
           onChange={this.handleInputChangeForImax}
         />
 
-        <h2>The total is : £ {this.state.total}</h2>
-        <button>Add Tickets</button>
+        <h2 className="text">The total is : £ {this.state.total}</h2>
+        <button className="text">Add Tickets</button>
         <h1>{this.state.thursdayOffer}</h1>
       </form>
     );
