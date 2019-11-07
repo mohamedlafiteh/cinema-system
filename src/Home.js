@@ -17,6 +17,7 @@ export class Home extends Component {
     e.preventDefault();
 
     const currentTickets = this.state;
+
     const price = this.calculateTicket(currentTickets);
 
     currentTickets.price = price;
@@ -38,7 +39,7 @@ export class Home extends Component {
     });
 
     this.setState({
-      total: total
+      total: total.toFixed(2)
     });
   };
 
@@ -92,15 +93,12 @@ export class Home extends Component {
     return (
       <form className="form">
         <label className="text pick">Pick your ticket:</label>
-        {this.state.tickets.map((ticket, index) => (
-          <p key={index}>
-            `{ticket.ticketType} ({ticket.price})`
-          </p>
-        ))}
+
         <select value={this.state.ticketType} onChange={this.handleChange}>
           <option value="standard">Standard</option>
           <option value="concession">Concession</option>
         </select>
+
         <h2 className="text">
           {" "}
           The Ticket price is : £ {this.state.ticketPrice}
@@ -127,6 +125,11 @@ export class Home extends Component {
         <button className="text" onClick={this.handleClick}>
           Add Tickets
         </button>
+        {this.state.tickets.map((ticket, index) => (
+          <p key={index}>
+            {ticket.ticketType} : £ {ticket.price}
+          </p>
+        ))}
       </form>
     );
   }
