@@ -10,3 +10,5 @@ I am working on the Add ticket and the Thursday offer and the ticket totaling wh
 I am also going to add some unit testing for the code, and some css.
 
 I will add router and refactor the code into different components
+
+You can find same details in about page
