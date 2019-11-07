@@ -13,15 +13,39 @@ export class Home extends Component {
       selectedIMAX: false
     };
   }
+  handleClick = e => {
+    e.preventDefault();
 
-  componentDidMount = () => {
+    const currentTickets = this.state;
+    const price = this.calculateTicket(currentTickets);
+
+    currentTickets.price = price;
+
+    const newTickets = this.state.tickets;
+    newTickets.push(currentTickets);
+    this.setState({
+      tickets: newTickets
+    });
+
     this.calculateTotal();
   };
+  componentDidMount = () => {};
 
   calculateTotal = () => {
-    const ticketTYpe = this.state.ticketType;
-    const selectedIMAX = this.state.selectedIMAX;
-    const selectedReal3D = this.state.selectedReal3D;
+    let total = 0;
+    this.state.tickets.forEach(ticket => {
+      total += ticket.price;
+    });
+
+    this.setState({
+      total: total
+    });
+  };
+
+  calculateTicket = ticket => {
+    const ticketTYpe = ticket.ticketType;
+    const selectedIMAX = ticket.selectedIMAX;
+    const selectedReal3D = ticket.selectedReal3D;
 
     let price = 0;
     if (ticketTYpe === "standard") {
@@ -30,9 +54,6 @@ export class Home extends Component {
       price = 5.4;
     }
 
-    this.setState({
-      ticketPrice: price
-    });
     let total = 0;
     if (selectedIMAX && selectedReal3D) {
       total += price + 1.5 + 0.9;
@@ -40,19 +61,17 @@ export class Home extends Component {
       total += price + 0.9;
     } else if (selectedIMAX) {
       total += price + 1.5;
+    } else {
+      total = price;
     }
-    this.setState({
-      total: total.toFixed(2)
-    });
+
+    return total;
   };
 
   handleChange = e => {
-    this.setState(
-      {
-        ticketType: e.target.value
-      },
-      this.calculateTotal
-    );
+    this.setState({
+      ticketType: e.target.value
+    });
   };
 
   handleInputChangeRel = event => {
@@ -60,20 +79,24 @@ export class Home extends Component {
       return {
         selectedReal3D: !prev.selectedReal3D
       };
-    }, this.calculateTotal);
+    });
   };
   handleInputChangeForImax = event => {
     this.setState(prev => {
       return {
         selectedIMAX: !prev.selectedIMAX
       };
-    }, this.calculateTotal);
+    });
   };
   render() {
     return (
       <form className="form">
         <label className="text pick">Pick your ticket:</label>
-
+        {this.state.tickets.map((ticket, index) => (
+          <p key={index}>
+            `{ticket.ticketType} ({ticket.price})`
+          </p>
+        ))}
         <select value={this.state.ticketType} onChange={this.handleChange}>
           <option value="standard">Standard</option>
           <option value="concession">Concession</option>
@@ -101,8 +124,9 @@ export class Home extends Component {
         />
 
         <h2 className="text">The total is : £ {this.state.total}</h2>
-        <button className="text">Add Tickets</button>
-        <h1>{this.state.thursdayOffer}</h1>
+        <button className="text" onClick={this.handleClick}>
+          Add Tickets
+        </button>
       </form>
     );
   }
