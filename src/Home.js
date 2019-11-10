@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./home.css";
+
 export class Home extends Component {
   constructor(props) {
     super(props);
@@ -7,6 +8,7 @@ export class Home extends Component {
       tickets: [],
       thursdayOffer: "",
       setDay: "",
+      ticketsNumber: 0,
       ticketType: "standard",
       ticketPrice: 0,
       total: 0,
@@ -22,10 +24,9 @@ export class Home extends Component {
   addDate = e => {
     let date = new Date();
     let day = date.getDay();
-    console.log(day);
 
     let weekDay;
-    if (day === 0) {
+    if (day === 4) {
       weekDay = "Thursday";
 
       this.setState({
@@ -44,18 +45,31 @@ export class Home extends Component {
 
     const newTickets = this.state.tickets;
     newTickets.push(newTicket);
+    const ticketsNumber = newTickets.length;
     this.setState({
-      tickets: newTickets
+      tickets: newTickets,
+      ticketsNumber: ticketsNumber
     });
   };
 
   calculateTotal = () => {
-    let total = 0;
-    this.state.tickets.forEach(ticket => {
-      total += ticket.price;
-    });
+    const day = this.state.setDay;
+    const ticketsNumber = this.state.ticketsNumber;
+    let tickets = this.state.tickets;
 
-    return total;
+    let total = 0;
+
+    if (day === "Thursday" && ticketsNumber >= 1) {
+      tickets.slice(0, -2).forEach(ticket => {
+        total += ticket.price;
+      });
+    } else {
+      tickets.forEach(ticket => {
+        total += ticket.price;
+      });
+    }
+
+    return total.toFixed(2);
   };
 
   handleChange = e => {
@@ -113,7 +127,7 @@ export class Home extends Component {
       setDay
     } = this.state;
     return (
-      <form className="form">
+      <form className="form background">
         {setDay === "Thursday" ? <p>{thursdayOffer}</p> : null}
         <label className="text pick">Pick your ticket:</label>
         <select value={ticketType} onChange={this.handleChange}>
