@@ -26,7 +26,7 @@ export class Home extends Component {
     let day = date.getDay();
 
     let weekDay;
-    if (day === 4) {
+    if (day === 0) {
       weekDay = "Thursday";
 
       this.setState({
@@ -128,7 +128,9 @@ export class Home extends Component {
     } = this.state;
     return (
       <form className="form background">
-        {setDay === "Thursday" ? <p>{thursdayOffer}</p> : null}
+        {setDay === "Thursday" ? (
+          <p style={{ color: "red" }}>{thursdayOffer}</p>
+        ) : null}
         <label className="text pick">Pick your ticket:</label>
         <select value={ticketType} onChange={this.handleChange}>
           <option value="standard">Standard</option>
