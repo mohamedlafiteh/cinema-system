@@ -6,31 +6,48 @@ export class Home extends Component {
     this.state = {
       tickets: [],
       thursdayOffer: "",
+      setDay: "",
       ticketType: "standard",
       ticketPrice: 0,
       total: 0,
       selectedReal3D: false,
-      selectedIMAX: false
+      selectedIMAX: false,
+      priceEach: 0,
+      subTotal: 0
     };
   }
+  componentDidMount() {
+    this.addDate();
+  }
+  addDate = e => {
+    let date = new Date();
+    let day = date.getDay();
+    console.log(day);
+
+    let weekDay;
+    if (day === 0) {
+      weekDay = "Thursday";
+
+      this.setState({
+        setDay: weekDay,
+        thursdayOffer: "Buy One Get Two Free"
+      });
+    }
+  };
   handleClick = e => {
     e.preventDefault();
 
-    const currentTickets = this.state;
-
-    const price = this.calculateTicket(currentTickets);
-
-    currentTickets.price = price;
+    let newTicket = {
+      ticketType: this.state.ticketType,
+      price: this.getTicketSubtotal()
+    };
 
     const newTickets = this.state.tickets;
-    newTickets.push(currentTickets);
+    newTickets.push(newTicket);
     this.setState({
       tickets: newTickets
     });
-
-    this.calculateTotal();
   };
-  componentDidMount = () => {};
 
   calculateTotal = () => {
     let total = 0;
@@ -38,41 +55,37 @@ export class Home extends Component {
       total += ticket.price;
     });
 
-    this.setState({
-      total: total.toFixed(2)
-    });
-  };
-
-  calculateTicket = ticket => {
-    const ticketTYpe = ticket.ticketType;
-    const selectedIMAX = ticket.selectedIMAX;
-    const selectedReal3D = ticket.selectedReal3D;
-
-    let price = 0;
-    if (ticketTYpe === "standard") {
-      price = 7.9;
-    } else if (ticketTYpe === "concession") {
-      price = 5.4;
-    }
-
-    let total = 0;
-    if (selectedIMAX && selectedReal3D) {
-      total += price + 1.5 + 0.9;
-    } else if (selectedReal3D) {
-      total += price + 0.9;
-    } else if (selectedIMAX) {
-      total += price + 1.5;
-    } else {
-      total = price;
-    }
-
     return total;
   };
 
   handleChange = e => {
+    const ticketType = e.target.value;
+
     this.setState({
-      ticketType: e.target.value
+      ticketType: ticketType
     });
+  };
+
+  getTicketSubtotal = () => {
+    const ticketType = this.state.ticketType;
+    const selectedIMAX = this.state.selectedIMAX;
+    const selectedReal3D = this.state.selectedReal3D;
+
+    let total = 0;
+    if (ticketType === "standard") {
+      total += 7.9;
+    } else if (ticketType === "concession") {
+      total += 5.4;
+    }
+
+    if (selectedReal3D) {
+      total += 0.9;
+    }
+    if (selectedIMAX) {
+      total += 1.5;
+    }
+
+    return total;
   };
 
   handleInputChangeRel = event => {
@@ -89,47 +102,56 @@ export class Home extends Component {
       };
     });
   };
+
   render() {
+    const {
+      thursdayOffer,
+      ticketType,
+      selectedIMAX,
+      selectedReal3D,
+
+      setDay
+    } = this.state;
     return (
       <form className="form">
+        {setDay === "Thursday" ? <p>{thursdayOffer}</p> : null}
         <label className="text pick">Pick your ticket:</label>
-
-        <select value={this.state.ticketType} onChange={this.handleChange}>
+        <select value={ticketType} onChange={this.handleChange}>
           <option value="standard">Standard</option>
           <option value="concession">Concession</option>
         </select>
-
         <h2 className="text">
           {" "}
-          The Ticket price is : £ {this.state.ticketPrice}
+          The Ticket price is : £ {this.getTicketSubtotal()}
         </h2>
-
         <label className="text">Real3D: </label>
         <input
           name="Real3D"
           type="checkbox"
-          checked={this.state.selectedReal3D}
+          checked={selectedReal3D}
           onChange={this.handleInputChangeRel}
         />
-
         <br />
         <label className="text">IMAX:</label>
         <input
           name="IMAX"
           type="checkbox"
-          checked={this.state.selectedIMAX}
+          checked={selectedIMAX}
           onChange={this.handleInputChangeForImax}
         />
 
-        <h2 className="text">The total is : £ {this.state.total}</h2>
+        <br />
         <button className="text" onClick={this.handleClick}>
           Add Tickets
         </button>
+
         {this.state.tickets.map((ticket, index) => (
           <p key={index}>
             {ticket.ticketType} : £ {ticket.price}
           </p>
         ))}
+
+        <h2 className="text">The total is : £ {this.calculateTotal()}</h2>
       </form>
     );
   }
