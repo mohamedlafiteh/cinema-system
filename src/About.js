@@ -11,12 +11,11 @@ export default function About() {
         1- The first task I worked on display the ticket price when select in
         the state Then I worked on the adding option <br />
         for the real3D and Imax And add the calculation then display results in
-        the total. <br /> <pre /> 2- I am working on the Add ticket and the
-        Thursday offer and the ticket totaling which will finish it by tomorrow
+        the total. <br /> <pre /> 2- Then worked on the Add ticket and the
+        Thursday offer and the ticket totaling.
         <br />
-        as I didn't have enough time today and will push the changes to the
-        gihub I am also going to add some unit testing <br />
-        for the code, and some css. <br />I will add router and refactor the
+        I am going to add some unit testing <br />
+        for the code, and some css. <br />I added router and will refactor the
         code into different components
       </p>
       <h3 className="text">Mohamed Lafiteh</h3>
