@@ -26,7 +26,7 @@ export class Home extends Component {
     let day = date.getDay();
 
     let weekDay;
-    if (day === 0) {
+    if (day === 4) {
       weekDay = "Thursday";
 
       this.setState({
